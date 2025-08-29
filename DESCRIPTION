@@ -1,0 +1,19 @@
+Package: pscp
+Title: Practically Significant Change Point
+Version: 0.1.0
+Authors@R: person("Pascal", "Quanz", email = "pascal.quanz@rub.de",role = c("aut","cre"))
+Description: Functionality for the test for relevant hypotheses 
+  as described in the article 'Practicially significant change points 
+  in high dimensions - measuring signal strength pro active component.'
+License: MIT + file LICENSE
+URL: https://github.com/pquanz/practically-significant-changepoints
+BugReports: https://github.com/pquanz/practically-significant-changepoints/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends: 
+    R (>= 3.5)
+Suggests: 
+    future,
+    future.apply,
+    progressr
