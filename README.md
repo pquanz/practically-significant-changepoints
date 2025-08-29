@@ -59,8 +59,12 @@ q <- quantile_g(0.05, 20)
 
 # Test decision (at boundary of H0: 5% rejections on average)
 print(tn > Δ + q * vn)  # FALSE
+```
 
+All of the above can be executed in short by using the command `cp_test()`.
+It will also give the maximum value for $\Delta$ such that the test still rejects.
 
+```r
 # all of the above in short: (delta = Δ)
 out <- cp_test(X, delta = 25, adaptive = FALSE, alpha = 0.05)
 print(out)
