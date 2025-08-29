@@ -14,23 +14,23 @@ In the following, we remark on some core computational steps.
   <br>
   Expanding (ignoring the prefactor) yields
   $$
-  \begin{align*}
+  \begin{aligned}
     T_n (k, m; \lambda) &= \sum_{\substack{i_1, i_2 = 1 \\ |i_1 - i_2| > m}}^{\lfloor \lambda k \rfloor} \sum_{\substack{j_1, j_2 = k + 1 \\ |j_1 - j_2| > m}}^{k + \lfloor \lambda (n-k) \rfloor} (X_{i_1} - X_{j_1})^\top (X_{i_2} - X_{j_2})\\
     &= N_m (\lfloor \lambda (n-k) \rfloor) \cdot T_1 (\lambda) + N_m (\lfloor \lambda k \rfloor) \cdot T_2 (\lambda) - 2 \cdot T_3 (\lambda),
-  \end{align*}
+  \end{aligned}
   $$
   where
   $$
-  \begin{align*}
+  \begin{aligned}
     T_1 (\lambda) &= \sum_{\substack{i_1, i_2 = 1 \\ |i_1 - i_2| > m}}^{\lfloor \lambda k \rfloor} X_{i_1}^\top X_{i_2},\\
     T_2 (\lambda) &= \sum_{\substack{i_1, i_2 = k + 1 \\ |i_1 - i_2| > m}}^{k + \lfloor \lambda (n-k) \rfloor} X_{j_1}^\top X_{j_2},\\
     T_3 (\lambda) &= \sum_{\substack{i_1, i_2 = 1 \\ |i_1 - i_2| > m}}^{\lfloor \lambda k \rfloor} \sum_{\substack{j_1, j_2 = k + 1 \\ |j_1 - j_2| > m}}^{k + \lfloor \lambda (n-k) \rfloor} X_{i_1}^\top X_{j_2}.
-  \end{align*}
+  \end{aligned}
   $$
   These terms will be calculated as follows:
     - $T_1 (\lambda)$: Rewrite it as
       $$
-      \begin{align*}
+      \begin{aligned}
         T_1 (\lambda)
         &= \bigg( X_1^\top (0, ..., 0, X_{m+2}, ..., X_{\lfloor \lambda k \rfloor}) + \cdots + X_{\lfloor \lambda k \rfloor}^\top (X_1, ..., X_{\lfloor \lambda k \rfloor - m - 1}, 0, ..., 0) \bigg) \begin{pmatrix}
         1 \\ \vdots \\ 1
@@ -40,22 +40,22 @@ In the following, we remark on some core computational steps.
         \end{pmatrix} + \cdots +  X_{\lfloor \lambda k \rfloor}^\top (X_{j})_{|\lfloor \lambda k \rfloor-j| > m}  \begin{pmatrix}
         1 \\ \vdots \\ 1
         \end{pmatrix}
-      \end{align*}
+      \end{aligned}
       $$
       The indices in the respective matrices on the right hand sides are stored in the list `indices_m_apart`. Then, the variable `trimmed_sample_t` is the respective matrix on the right hand side in each term. The vector containing ones is used to sum up all entries of the vector of inner products that is left. In the code, this is done by the line `sum(sample[i,] %*% trimmed_sample_t)`. Finally, the outer for loop `for (i in 1:klam) {...}` represents the sum that is calculated over all these terms. The variable `t1` accumulates the running sum and will take the value of $T_1 (\lambda)$ in the end.
     - $T_2 (\lambda)$: Similar to $T_1 (\lambda)$. Its value will be stored in `t2`.
 
     - $T_3 (\lambda)$: This term will only be nonzero if $\lfloor \lambda k \rfloor > m$ and $\lfloor \lambda (n-k) \rfloor > m$. By Lemma S2.1
       $$
-        \begin{align*}
-          \sum_{\substack{i_1, i_2 = 1 \\ |i_1 - i_2| > m}}^{\lfloor \lambda k \rfloor} X_{i_1} = \sum_{i=1}^{\lfloor \lambda k \rfloor} (\lfloor \lambda k \rfloor - 2m - 1) X_i + \sum_{i=1}^{m} i X_{i + \lfloor \lambda k \rfloor - m} - \sum_{i=1}^{m} (i-m-1) X_i,
-        \end{align*}
+      \begin{aligned}
+        \sum_{\substack{i_1, i_2 = 1 \\ |i_1 - i_2| > m}}^{\lfloor \lambda k \rfloor} X_{i_1} = \sum_{i=1}^{\lfloor \lambda k \rfloor} (\lfloor \lambda k \rfloor - 2m - 1) X_i + \sum_{i=1}^{m} i X_{i + \lfloor \lambda k \rfloor - m} - \sum_{i=1}^{m} (i-m-1) X_i,
+      \end{aligned}
       $$
       which will be stored in `t31`. The function `colSums(sample[(1:klam), , drop = FALSE])` will sum up all values $X_1, ..., X_{\lfloor \lambda k \rfloor}$. A similar representation can be found for
       $$
-        \begin{align*}
-          \sum_{\substack{j_1, j_2 = k+1 \\ |j_1 - j_2| > m}}^{k + \lfloor \lambda (n-k) \rfloor} X_{j_1},
-        \end{align*}
+      \begin{aligned}
+        \sum_{\substack{j_1, j_2 = k+1 \\ |j_1 - j_2| > m}}^{k + \lfloor \lambda (n-k) \rfloor} X_{j_1},
+      \end{aligned}
       $$
       whose value will be stored in `t32`. Close to the end, the inner product of those to terms will be calculated by `t31 %*% t32`.
 
