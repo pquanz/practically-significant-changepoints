@@ -5,7 +5,7 @@ Please credit the original data providers listed below and include the license U
 If you modify the data, state the modifications.
 
 - **Accessed via:** OpenAQ (https://openaq.org)  
-- **Access date:** 2025-08-30  
+- **Access date:** 2025-08-24  
 - **General note:** Licenses vary by provider; your use remains subject to each provider’s license.  
 - **Recommendation:** Keep this file with any copies of the data.
 
