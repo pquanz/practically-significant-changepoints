@@ -2,8 +2,8 @@
 #' @keywords internal
 #' @noRd
 .map_apply <- function(index, fn, parallelize = TRUE, combine = "c") {
-  parallelize   <- isTRUE(parallelize)
-  progress      <- interactive()
+  parallelize <- isTRUE(parallelize)
+  progress    <- interactive()
 
   if (isTRUE(progress)) progressr::handlers(
     Sys.getenv("PSCP_PROGRESS_TYPE", "txtprogressbar")

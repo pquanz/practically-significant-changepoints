@@ -9,18 +9,20 @@
 \usage{
 cp_test(
   sample,
-  delta,
-  m = c(m1 = 0, m2 = 0),
-  adaptive = TRUE,
+  delta = NULL,
+  m = NULL,
+  adaptive = FALSE,
   support_set = NULL,
   alpha = 0.05,
+  method_m = "individual",
   n_points = 20,
   parallelize = FALSE
 )
 
 cp_test_sparsity_adj(
   sample,
-  delta,
+  delta = NULL,
+  m = NULL,
   alpha = 0.05,
   method_m = "individual",
   n_points = 20,
@@ -29,7 +31,8 @@ cp_test_sparsity_adj(
 
 cp_test_normalized(
   sample,
-  delta,
+  delta = NULL,
+  m = NULL,
   method_m = "individual",
   alpha = 0.05,
   n_points = 20,
@@ -40,10 +43,11 @@ cp_test_normalized(
 \item{sample}{Numeric matrix or numeric data frame (rows = n, cols = p).}
 
 \item{delta}{Numeric scalar (paper: \eqn{\Delta}). Size size of relevant
-change that will be tested for.}
+change that will be tested for. If set to \code{NULL}, it only returns
+\code{max_delta_reject} and no test decision. Default \code{NULL}}
 
 \item{m}{Trimming parameter. Either a nonnegative scalar applied to both
-sides or a length-2 numeric \code{c(m1 = ..., m2 = ...)}.}
+sides or a length-2 numeric \code{c(m1 = ..., m2 = ...)}. Default \code{NULL}}
 
 \item{adaptive}{Logical; if \code{TRUE} and \code{support_set = NULL}, estimates
 the support set via \code{estimate_support_set}.
@@ -54,13 +58,8 @@ In this case, \code{adaptive} must be set to \code{TRUE}.}
 
 \item{alpha}{Test level in (0, 1). Default \code{0.05}.}
 
-\item{n_points}{Integer (paper: \eqn{K}); number of grid points used by
-the self-normalizing statistic \eqn{V_n}. Default \code{20}.}
-
-\item{parallelize}{Logical; if \code{TRUE}, parallelizes internal loops when a
-backend is registered; otherwise runs sequentially. Default \code{TRUE}.}
-
-\item{method_m}{Character, either \code{"max"} or \code{"individual"}.
+\item{method_m}{Character, either \code{"max"} or \code{"individual"}. Only relevant
+if \code{m = NULL}. Options are:
 \itemize{
 \item \code{"individual"}: returns \code{c(m1 = ..., m2 = ...)}, where m1 is the
 estimated trimming parameter before the change point and m2 the
@@ -69,18 +68,25 @@ estimated trimming parameter after the change point.
 maximum of the estimators obtained as described in individual.
 Default is \code{"max"}.
 }}
+
+\item{n_points}{Integer (paper: \eqn{K}); number of grid points used by
+the self-normalizing statistic \eqn{V_n}. Default \code{20}.}
+
+\item{parallelize}{Logical; if \code{TRUE}, parallelizes internal loops when a
+backend is registered; otherwise runs sequentially. Default \code{TRUE}.}
 }
 \value{
-A data.frame object with entries
+A data.frame object with entries (not all are nec. given)
 \itemize{
 \item \code{tn}: value of either \eqn{T_n} or \eqn{T_{n, \hat S_n}}
 (depending on the value of \code{adaptive})
 \item \code{vn}: value of either \eqn{V_n} or \eqn{V_{n, \hat S_n}}
 (depending on the value of \code{adaptive})
 \item \code{khat}: named scalar \code{critical_value}
-\item \code{reject}: Logical; decision of the test
-\item \code{max_delta_reject}: the maximum value such that any relevant
-hypothesis with \code{delta <= max_delta_reject} will reject the
+\item \code{reject}: Logical; decision of the test (only given if \code{delta}
+is not equal to \code{NULL})
+\item \code{delta_max}: the maximum value such that any relevant
+hypothesis with \code{delta <= delta_max} will reject the
 null hypotheses.
 }
 }
@@ -110,14 +116,6 @@ shipped to workers automatically; just ensure any packages used internally
 are listed in \verb{Imports:}/\verb{Suggests:} in \code{DESCRIPTION}.
 }
 
-\examples{
-set.seed(1)
-X <- matrix(rnorm(200 * 10), 200, 10)
-# Minimal call (adaptive, no trimming)
-# out <- cp_test(X, delta = 2, alpha = 0.05)
-# Fixed trimming example, nonadaptive
-# out <- cp_test(X, delta = 1, m = 2, adaptive = FALSE)
-}
 \seealso{
 \code{\link[=tn_statistic]{tn_statistic()}}, \code{\link[=quantile_g]{quantile_g()}}
 }

@@ -164,8 +164,8 @@ estimate_m <- function(
         return(i - 1)
       }
     }
-    # i
-    which.min(diffs)
+    i
+    # which.min(diffs)  # TODO: add option
   }
 
   if (floor(k * max_proportion_m) > 0) {
