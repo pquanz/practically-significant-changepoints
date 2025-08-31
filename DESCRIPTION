@@ -1,6 +1,6 @@
 Package: pscp
 Title: Practically Significant Change Point
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("Pascal", "Quanz", email = "pascal.quanz@rub.de",role = c("aut","cre"))
 Description: Functionality for the test for relevant hypotheses 
   as described in the article 'Practicially significant change points 

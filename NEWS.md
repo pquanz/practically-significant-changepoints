@@ -1,3 +1,16 @@
+# pscp 0.2.0
+
+
+## Added
+- confidence intervals: `ci_sq_norm()` and `ci_sq_norm_twoside()`. 
+
+
+## Changed
+- testing withouth setting `delta`.
+- minor fix in `trimming.R`.
+
+
+
 # pscp 0.1.0
 
 First public, complete release.
