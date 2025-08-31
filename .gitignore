@@ -11,3 +11,10 @@ Thumbs.db
 # Build/check artifacts
 *.Rcheck/
 *.tar.gz
+
+
+# Ignore all CSVs
+/data-example/raw/*.csv
+
+# except sensor meta data:
+!/data-example/raw/sensors.csv
