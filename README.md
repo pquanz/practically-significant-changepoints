@@ -3,7 +3,7 @@
 
 This repository (including the R package pscp) accompanies the publication
 "Practically significant change points in high dimension - measuring signal
-strength pro active component."
+strength pro active component" (see [arXiv](https://arxiv.org/abs/2508.21520)).
 
 
 
