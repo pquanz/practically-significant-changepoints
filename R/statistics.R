@@ -246,34 +246,8 @@ estimate_support_set <- function(
     delta_i > v_i * log(p)^kappa
   }
 
-
-
   indices <- .map_apply(1:p, check_coordinate, parallelize = parallelize)
   which(indices)
-
-  # if (parallelize) {
-  #   cl <- doSNOW::makeCluster(strtoi(Sys.getenv("PSCHANGEPOINT_N_CORES")))
-  #   doSNOW::registerDoSNOW(cl)
-  #   `%dopar%` <- foreach::`%dopar%`
-
-  #   exports <- c(
-  #     "check_coordinate", "tn_statistic", "vl_statistic", "nm_factor"
-  #   )
-  #   indices <- foreach::foreach(
-  #     i = 1:p, .combine = c, .export = exports
-  #   ) %dopar% {
-  #     check_coordinate(i)
-  #   }
-  #   doSNOW::stopCluster(cl)
-
-  #   which(indices)
-  # } else {
-  #   indices <- c()
-  #   for (i in 1:p) {
-  #     indices <- c(indices, check_coordinate(i))
-  #   }
-  #   which(indices)
-  # }
 }
 
 
@@ -306,10 +280,4 @@ vl_statistic <- function(
 #' @export
 tn_statistic <- function(sample, k, m = c(m1 = 0, m2 = 0), support_set = NULL) {
   t_lambda_statistic(sample, k, m, 1, support_set)
-}
-
-#' @rdname estimate_support_set
-#' @export
-s_hat <- function() {
-
 }
