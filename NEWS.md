@@ -1,3 +1,18 @@
+# pscp 0.2.1
+
+
+## Changed
+
+- Removed alias `s_hat()`
+- Changed order of parameter `method` in `estimate_m()`.
+
+
+## Fixes
+
+- Fixed `estimate_m()`, where `get_f1()` was used, instead of `get_delta_f1()`.
+
+
+
 # pscp 0.2.0
 
 
