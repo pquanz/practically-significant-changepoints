@@ -2,7 +2,6 @@
 % Please edit documentation in R/statistics.R
 \name{estimate_support_set}
 \alias{estimate_support_set}
-\alias{s_hat}
 \title{Pivotal set estimator (paper: \eqn{\hat S_n})}
 \usage{
 estimate_support_set(
@@ -13,8 +12,6 @@ estimate_support_set(
   n_points = 20,
   parallelize = FALSE
 )
-
-s_hat()
 }
 \arguments{
 \item{sample}{Numeric matrix (rows = n, columns = p).}
