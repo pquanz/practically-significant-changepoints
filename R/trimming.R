@@ -149,9 +149,9 @@ get_delta_f2 <- function(
 #' @export
 estimate_m <- function(
   sample, k,
+  method = "max",
   threshold = 0.01,
   max_proportion_m = 1 / 3,
-  method = "max",
   parallelize = FALSE
 ) {
   n <- nrow(sample)
