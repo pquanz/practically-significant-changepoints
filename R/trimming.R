@@ -47,8 +47,7 @@ get_delta_f1 <- function(
   sample, k, max_proportion_m = 1 / 3, parallelize = FALSE
 ) {
   f1 <- get_f1(sample, k, max_proportion_m, parallelize)
-  del_f1 <- abs(c(f1, 0) - c(0, f1))[1:(length(f1) - 1)]
-  data.frame(m = seq_len(length(del_f1)), F = del_f1)
+  abs(c(f1, 0) - c(0, f1))[1:(length(f1) - 1)]
 }
 
 
@@ -106,8 +105,7 @@ get_delta_f2 <- function(
   sample, k, max_proportion_m = 1 / 3, parallelize = FALSE
 ) {
   f2 <- get_f2(sample, k, max_proportion_m, parallelize)
-  del_f2 <- abs(c(f2, 0) - c(0, f2))[1:(length(f2) - 1)]
-  data.frame(m = seq_len(length(del_f2)), F = del_f2)
+  abs(c(f2, 0) - c(0, f2))[1:(length(f2) - 1)]
 }
 
 
@@ -170,14 +168,14 @@ estimate_m <- function(
 
   if (floor(k * max_proportion_m) > 0) {
     m1 <- estimate_m_from_diffs(
-      get_f1(sample, k, max_proportion_m, parallelize)
+      get_delta_f1(sample, k, max_proportion_m, parallelize)
     )
   } else {
     m1 <- 0
   }
   if (floor((n - k) * max_proportion_m) > 0) {
     m2 <- estimate_m_from_diffs(
-      get_f2(sample, k, max_proportion_m, parallelize)
+      get_delta_f2(sample, k, max_proportion_m, parallelize)
     )
   } else {
     m2 <- 0

@@ -19,9 +19,9 @@ get_delta_f2(sample, k, max_proportion_m = 1/3, parallelize = FALSE)
 estimate_m(
   sample,
   k,
+  method = "max",
   threshold = 0.01,
   max_proportion_m = 1/3,
-  method = "max",
   parallelize = FALSE
 )
 }
@@ -39,15 +39,15 @@ either the sample before or after the change point. Default \code{1/3}.}
 \item{parallelize}{Logical; if \code{TRUE}, evaluates the internal loop in
 parallel.}
 
-\item{threshold}{Numeric scalar used by threshold-based rules (see \code{method}).
-Default \code{0.01}.}
-
 \item{method}{Character selecting the return value. Supported:
 \itemize{
 \item \code{"max"}: pick the maximum of m1 and m2 and return numeric m.
 \item \code{"individual"}: keep both values m1 and m2 and return both as list.
 Default \code{"max"}.
 }}
+
+\item{threshold}{Numeric scalar used by threshold-based rules (see \code{method}).
+Default \code{0.01}.}
 }
 \value{
 A data frame with two columns:

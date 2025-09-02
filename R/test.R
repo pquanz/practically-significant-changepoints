@@ -61,7 +61,7 @@ cp_test <- function(
   estimate_m <- is.null(m)
   if (estimate_m) {
     m <- estimate_m(
-      sample, khat, method_m = method_m, parallelize = parallelize
+      sample, khat, method = method_m, parallelize = parallelize
     )
   }
 
