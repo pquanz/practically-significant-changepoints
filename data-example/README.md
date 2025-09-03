@@ -122,20 +122,19 @@ Taking the square root of `tn`, `vn` and `delta_max` yields better interpretable
 ```
 
 
-Finally, we can use the result of the tests to obtain one- and two-sided 95% confidence intervals (taking square root again) by (similarly for `test_s`)
-
+Finally, we can use the result of the tests to obtain one- and two-sided 95% confidence intervals (taking square root again) by
 
 ```r
 > sqrt(ci_sq_norm(test_n))
 #    lower    upper 
-#  0.00000 11.16154 
+#  0.00000 12.00167 
 
 > sqrt(ci_sq_norm_twoside(test_n))
 #    lower    upper 
-# 12.12642 11.02588 
+# 11.03087 12.12188 
 ```
 
-
+A similar output is given for `ci_sq_norm(test_s)` and `ci_sq_norm_twoside(test_s)`.
 
 
 
