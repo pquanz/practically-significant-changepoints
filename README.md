@@ -123,6 +123,6 @@ out <- future.apply::future_lapply(
 # 100 0.981 0.003   50     0.919       20 0  FALSE
 
 
-# take the average of all rejections
+# take the average of all rejections (below 0.05)
 print(mean(do.call(rbind, out)$reject))    # 0.04
 ```
