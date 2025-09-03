@@ -1,11 +1,23 @@
-# pscp 0.2.1
+# pscp 0.2.2
 
+## Fixes
+
+- Fixes to quantile table (alpha and 1 - alpha were swapped)
+
+## Changed
+
+- Added default parameters to quantile function
+- Minor stability changes to tests in `test.R`
+
+
+
+
+# pscp 0.2.1
 
 ## Changed
 
 - Removed alias `s_hat()`
 - Changed order of parameter `method` in `estimate_m()`.
-
 
 ## Fixes
 
@@ -14,7 +26,6 @@
 
 
 # pscp 0.2.0
-
 
 ## Added
 - confidence intervals: `ci_sq_norm()` and `ci_sq_norm_twoside()`. 
