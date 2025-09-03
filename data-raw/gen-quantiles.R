@@ -26,7 +26,7 @@ r_by_dist <- function(n, n_points = 20, dist = "G") {
 # Monte Carlo function for quantile
 quant_at <- function(alpha, n_points, dist) {
   x <- r_by_dist(n_samples, n_points, dist)
-  stats::quantile(x, probs = 1 - alpha, names = FALSE, type = 8)
+  stats::quantile(x, probs = alpha, names = FALSE, type = 8)
 }
 
 # build table

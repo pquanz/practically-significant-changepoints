@@ -14,27 +14,27 @@
 \usage{
 quantile_function(
   dist = c("G", "V", "H", "W"),
-  alpha = 0.05,
-  n_points,
+  alpha = 0.95,
+  n_points = 20,
   interpolate = TRUE,
   extrapolate = FALSE
 )
 
-q_g(alpha = 0.05, n_points, ...)
+q_g(alpha = 0.95, n_points = 20, ...)
 
-quantile_g(alpha = 0.05, n_points, ...)
+quantile_g(alpha = 0.95, n_points = 20, ...)
 
-q_v(alpha = 0.05, n_points, ...)
+q_v(alpha = 0.95, n_points = 20, ...)
 
-quantile_v(alpha = 0.05, n_points, ...)
+quantile_v(alpha = 0.95, n_points = 20, ...)
 
-q_h(alpha = 0.05, n_points, ...)
+q_h(alpha = 0.95, n_points = 20, ...)
 
-quantile_h(alpha = 0.05, n_points, ...)
+quantile_h(alpha = 0.95, n_points = 20, ...)
 
-q_w(alpha = 0.05, n_points, ...)
+q_w(alpha = 0.95, n_points = 20, ...)
 
-quantile_w(alpha = 0.05, n_points, ...)
+quantile_w(alpha = 0.95, n_points = 20, ...)
 }
 \arguments{
 \item{dist}{"G", "V", "H", "W".}

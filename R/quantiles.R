@@ -14,8 +14,8 @@
 #'    the arguments `interpolate` and `extrapolate`.
 #' @return Numeric scalar critical value (or `NA_real_`).
 quantile_function <- function(dist = c("G", "V", "H", "W"),
-                              alpha = 0.05,
-                              n_points,
+                              alpha = 0.95,
+                              n_points = 20,
                               interpolate = TRUE,
                               extrapolate = FALSE) {
   dist <- match.arg(dist)
@@ -46,44 +46,44 @@ quantile_function <- function(dist = c("G", "V", "H", "W"),
 
 #' @rdname quantile_function
 #' @export
-q_g <- function(alpha = 0.05, n_points, ...) {
+q_g <- function(alpha = 0.95, n_points = 20, ...) {
   quantile_function("G", alpha = alpha, n_points = n_points, ...)
 }
 #' @rdname quantile_function
 #' @export
-quantile_g <- function(alpha = 0.05, n_points, ...) {
+quantile_g <- function(alpha = 0.95, n_points = 20, ...) {
   quantile_function("G", alpha = alpha, n_points = n_points, ...)
 }
 
 #' @rdname quantile_function
 #' @export
-q_v <- function(alpha = 0.05, n_points, ...) {
+q_v <- function(alpha = 0.95, n_points = 20, ...) {
   quantile_function("V", alpha = alpha, n_points = n_points, ...)
 }
 #' @rdname quantile_function
 #' @export
-quantile_v <- function(alpha = 0.05, n_points, ...) {
+quantile_v <- function(alpha = 0.95, n_points = 20, ...) {
   quantile_function("V", alpha = alpha, n_points = n_points, ...)
 }
 
 #' @rdname quantile_function
 #' @export
-q_h <- function(alpha = 0.05, n_points, ...) {
+q_h <- function(alpha = 0.95, n_points = 20, ...) {
   quantile_function("H", alpha = alpha, n_points = n_points, ...)
 }
 #' @rdname quantile_function
 #' @export
-quantile_h <- function(alpha = 0.05, n_points, ...) {
+quantile_h <- function(alpha = 0.95, n_points = 20, ...) {
   quantile_function("H", alpha = alpha, n_points = n_points, ...)
 }
 
 #' @rdname quantile_function
 #' @export
-q_w <- function(alpha = 0.05, n_points, ...) {
+q_w <- function(alpha = 0.95, n_points = 20, ...) {
   quantile_function("W", alpha = alpha, n_points = n_points, ...)
 }
 #' @rdname quantile_function
 #' @export
-quantile_w <- function(alpha = 0.05, n_points, ...) {
+quantile_w <- function(alpha = 0.95, n_points = 20, ...) {
   quantile_function("W", alpha = alpha, n_points = n_points, ...)
 }

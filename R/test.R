@@ -61,14 +61,14 @@ cp_test <- function(
   estimate_m <- is.null(m)
   if (estimate_m) {
     m <- estimate_m(
-      sample, khat, method = method_m, parallelize = parallelize
+      sample, k = khat, method = method_m, parallelize = parallelize
     )
   }
 
   if (adaptive) {
     if (is.null(support_set)) {
       support_set <- estimate_support_set(
-        sample, khat, m, parallelize = parallelize
+        sample, k = khat, m = m, parallelize = parallelize
       )
     }
     tn <- tn_statistic(sample, khat, m, support_set)
@@ -78,7 +78,7 @@ cp_test <- function(
     vn <- vn_statistic(sample, khat, m, n_points = n_points)
   }
 
-  quantile <- quantile_g(alpha = alpha, n_points = n_points)
+  quantile <- quantile_g(alpha = 1 - alpha, n_points = n_points)
   max_delta_rej <- tn - quantile * vn
   df <- data.frame(
     tn        = round(tn, digits = 3),
@@ -117,7 +117,9 @@ cp_test_sparsity_adj <- function(
 ) {
 
   cp_test(
-    sample, delta, m, TRUE,
+    sample, delta,
+    m = m,
+    adaptive = TRUE,
     alpha = alpha,
     method_m = method_m,
     n_points = n_points,
@@ -139,7 +141,9 @@ cp_test_normalized <- function(
 ) {
 
   cp_test(
-    sample, delta, m, FALSE,
+    sample, delta,
+    m = m,
+    adaptive = FALSE,
     method_m = method_m,
     alpha = alpha,
     n_points = n_points,
