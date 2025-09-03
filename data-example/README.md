@@ -9,8 +9,7 @@ We describe the results of the test procedure from the package `pscp`.
 For a detailed description on how to obtain the data set, see [below](#reproduction-of-results).
 
 
-The data was obtained from the OpenAQ API and contains measurements of $\mathrm{PM}_{10}$ and
-$\mathrm{PM}_{2.5}$.
+The data was obtained from the OpenAQ API and contains measurements of PM<sub>10</sub> and PM<sub>2.5</sub>
 
 <details>
 
@@ -85,9 +84,9 @@ We have the following properties of the data set.
 ```r
 > print(parameters)
 # A tibble: 1 × 6
-      n     p  khat khat_date         m1    m2
-  <int> <int> <dbl> <chr>          <dbl> <dbl>
-1   458  1381   175 March 19, 2020    15    18
+#       n     p  khat khat_date         m1    m2
+#   <int> <int> <dbl> <chr>          <dbl> <dbl>
+# 1   458  1381   175 March 19, 2020    15    18
 ```
 
 

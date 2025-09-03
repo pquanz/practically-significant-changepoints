@@ -41,16 +41,18 @@ parameters <- tibble(
   khat_date = format(data_weekly[khat, ]$date, "%B %d, %Y")
 )
 
-future::plan(future::multisession, workers = 10)
-del_f1 <- get_delta_f1(df, parameters$khat, parallelize = TRUE)
-del_f2 <- get_delta_f2(df, parameters$khat, parallelize = TRUE)
 
 
 # visually selecting m1 and m2
+# future::plan(future::multisession, workers = 10)
+# del_f1 <- get_delta_f1(df, parameters$khat, parallelize = TRUE)
 # plot(del_f1, xlab = "m", ylab = "ΔF1", type = "l")
-parameters$m1 <- 15
 
+# del_f2 <- get_delta_f2(df, parameters$khat, parallelize = TRUE)
 # plot(del_f2, xlab = "m", ylab = "ΔF2", type = "l")
+
+
+parameters$m1 <- 15
 parameters$m2 <- 18
 
 
