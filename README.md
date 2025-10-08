@@ -70,8 +70,8 @@ We can pass `m = 0` (or `m = c(m1 = 0, m2 = 0)`) as well, otherwise it will esti
 these parameters. Here they turn out to be `m = c(m1 = 1, m2 = 1)` as can be seen in
 the output.
 
-It will also give the minimum value for $\Delta$ (`delta_min`) such that the test still
-rejects.
+It will also give the minimum value for $\Delta$ (`delta_min`) such that the test cannot
+be rejected anymore.
 
 
 ```r
