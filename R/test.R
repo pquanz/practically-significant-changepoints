@@ -7,7 +7,7 @@
 #' @param sample Numeric matrix or numeric data frame (rows = n, cols = p).
 #' @param delta Numeric scalar (paper: \eqn{\Delta}). Size size of relevant
 #'   change that will be tested for. If set to `NULL`, it only returns
-#'   `max_delta_reject` and no test decision. Default `NULL`
+#'   `min_delta` and no test decision. Default `NULL`
 #' @param m Trimming parameter. Either a nonnegative scalar applied to both
 #'   sides or a length-2 numeric `c(m1 = ..., m2 = ...)`. Default `NULL`
 #' @param adaptive Logical; if `TRUE` and `support_set = NULL`, estimates
@@ -37,9 +37,8 @@
 #'   - `khat`: named scalar `critical_value`
 #'   - `reject`: Logical; decision of the test (only given if `delta`
 #'     is not equal to `NULL`)
-#'   - `delta_max`: the maximum value such that any relevant
-#'     hypothesis with `delta <= delta_max` will reject the
-#'     null hypotheses.
+#'   - `delta_min`: the minimum value such that any relevant
+#'     hypothesis with `delta <= delta_min` cannot be rejected.
 #'
 #' @template parallelization
 #'
@@ -79,12 +78,12 @@ cp_test <- function(
   }
 
   quantile <- quantile_g(alpha = 1 - alpha, n_points = n_points)
-  max_delta_rej <- tn - quantile * vn
+  min_delta_rej <- tn - quantile * vn
   df <- data.frame(
     tn        = round(tn, digits = 3),
     vn        = round(vn, digits = 3),
     khat      = khat,
-    delta_max = round(max_delta_rej, digits = 3),
+    delta_min = round(min_delta_rej, digits = 3),
     n_points  = n_points
   )
 
@@ -96,7 +95,7 @@ cp_test <- function(
     df$m <- m
   }
 
-  if (!is.null(delta)) df$reject <- (max_delta_rej >= delta)
+  if (!is.null(delta)) df$reject <- (min_delta_rej > delta)
   if (adaptive) df$shat <- length(support_set)
 
   df

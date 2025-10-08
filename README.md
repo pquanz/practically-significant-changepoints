@@ -70,7 +70,7 @@ We can pass `m = 0` (or `m = c(m1 = 0, m2 = 0)`) as well, otherwise it will esti
 these parameters. Here they turn out to be `m = c(m1 = 1, m2 = 1)` as can be seen in
 the output.
 
-It will also give the maximum value for $\Delta$ (`delta_max`) such that the test still
+It will also give the minimum value for $\Delta$ (`delta_min`) such that the test still
 rejects.
 
 
@@ -78,7 +78,7 @@ rejects.
 # all of the above in short: (delta = Δ)
 out <- cp_test_normalized(X, delta = 1, alpha = 0.05)
 print(out)
-#      tn    vn khat delta_max n_points m1 m2 reject
+#      tn    vn khat delta_min n_points m1 m2 reject
 # 1 0.989 0.001  100      0.97       20  1  1  FALSE
 ```
 
@@ -111,7 +111,7 @@ out <- future.apply::future_lapply(
 )
 
 # do.call(rbind, out) looks as follows:
-#        tn    vn khat delta_max n_points m reject
+#        tn    vn khat delta_min n_points m reject
 # 1   0.962 0.006   50     0.844       20 0  FALSE
 # 2   0.989 0.002   50     0.951       20 0  FALSE
 # 3   1.026 0.004   50     0.941       20 0  FALSE

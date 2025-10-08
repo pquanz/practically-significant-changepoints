@@ -97,27 +97,27 @@ With `m = c(m1 = 15, m2 = 18)`, we get the test results by running the following
 
 ```r
 test_n <- cp_test_normalized(df, m = m, parallelize = TRUE)
-#        tn  vn khat delta_max n_points m1 m2
+#        tn  vn khat delta_min n_points m1 m2
 # 1 134.308 0.5  175   124.319       20 15 18
 
 test_s <- cp_test_sparsity_adj(df, m = m, parallelize = TRUE)
-#         tn    vn khat delta_max n_points m1 m2 shat
+#         tn    vn khat delta_min n_points m1 m2 shat
 # 1 2364.358 46.34  175  1437.819       20 15 18   61
 ```
 
-We do not have to set the parameter `delta` ($\Delta$). When left blank, we obtain the maximal value for $\Delta$, such that the test still rejects (if this value is positive).
+We do not have to set the parameter `delta` ($\Delta$). When left blank, we obtain the minimal value for $\Delta$, such that the test still rejects (if this value is positive).
 In the second test, the value `shat` represents the size of the estimated set $\hat S_n$.
 
 
-Taking the square root of `tn`, `vn` and `delta_max` yields better interpretable results for the actual size of the change.
+Taking the square root of `tn`, `vn` and `delta_min` yields better interpretable results for the actual size of the change.
 
 ```r
-> sqrt(test_n %>% select(tn, vn, delta_max))
-#         tn        vn delta_max
+> sqrt(test_n %>% select(tn, vn, delta_min))
+#         tn        vn delta_min
 # 1 11.58913 0.7071068  11.14984
 
-> sqrt(test_s %>% select(tn, vn, delta_max))
-#         tn       vn delta_max
+> sqrt(test_s %>% select(tn, vn, delta_min))
+#         tn       vn delta_min
 # 1 48.62466 6.807349  37.91858
 ```
 
