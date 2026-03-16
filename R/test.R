@@ -57,8 +57,8 @@ cp_test <- function(
   khat <- estimate_changepoint(sample)
 
   # estimate trimming param m, if it is NULL
-  estimate_m <- is.null(m)
-  if (estimate_m) {
+  should_estimate_m <- is.null(m)
+  if (should_estimate_m) {
     m <- estimate_m(
       sample, k = khat, method = method_m, parallelize = parallelize
     )
