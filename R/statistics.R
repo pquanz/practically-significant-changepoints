@@ -46,7 +46,7 @@ nm_factor <- function(k, m) {
 #' # Scalar trimming with unequal trimming parameters
 #' t_lambda_statistic(X, k = 120, m = c(m1 = 1, m2 = 3))
 #' @export
-t_lambda_statistic <- function(
+t_lambda_statistic_old <- function(
   sample, k, m = c(m1 = 0, m2 = 0), lambda = 1, support_set = NULL
 ) {
 
@@ -68,7 +68,7 @@ t_lambda_statistic <- function(
   if (k <= m1 + 1 || k + m2 >= n - 1) return(0)
 
   klam <- floor(k * lambda)
-  nklam <- floor((n - k) * lambda)
+  nklam <- floor((n - k - m2) * lambda)
 
   if (identical(support_set, integer(0))) {  # check for empty set S
     return(0)
@@ -91,9 +91,9 @@ t_lambda_statistic <- function(
 
 
   t2 <- 0
-  for (j in (k + 1):(k + nklam)) {
-    # indices i = k + 1, ... k + lambda * (n - k), which satisfy |j - i| > m2
-    indices_m_apart <- k + which(abs(j - (k + 1):(k + nklam)) > m2)
+  for (j in (k + m2 + 1):(k + m2 + nklam)) {
+    # indices i = k + m2 + 1, ... k + m2 + lambda * (n - k - m2), which satisfy |j - i| > m2
+    indices_m_apart <- k + m2 + which(abs(j - (k + m2 + 1):(k + m2 + nklam)) > m2)
     trimmed_sample_t <- t(sample[indices_m_apart, , drop = FALSE])
     t2 <- t2 + sum(sample[j, ] %*% trimmed_sample_t)
   }
@@ -109,28 +109,135 @@ t_lambda_statistic <- function(
         t31 <- t31 + i * sample[i + klam - m1, ] - (i - m1 - 1) * sample[i, ]
       }
     }
-    cs32 <- colSums(sample[((k + 1): (k + nklam)), , drop = FALSE])
+    cs32 <- colSums(sample[((k + m2 + 1): (k + m2 + nklam)), , drop = FALSE])
     t32 <- (nklam - 2 * m2 - 1) * cs32
     if (m2 > 0) {
       for (j in 1:m2) {
         t32 <- t32 +
-          j * sample[(j + k + nklam - m2), ] -
-          (j - m2 - 1) * sample[(j + k), ]
+          j * sample[(j + k + nklam), ] -
+          (j - m2 - 1) * sample[(j + k + m2), ]
       }
     }
   } else if (klam > m1 && nklam > m2) {
     # here m < 0
     t31 <- klam * colSums(sample[(1:klam), , drop = FALSE])
-    t32 <- nklam * colSums(sample[((k + 1): (k + nklam)), , drop = FALSE])
+    t32 <- nklam * colSums(sample[((k + m2 + 1): (k + m2 + nklam)), , drop = FALSE])
 
   } # else the sum will be zero
 
   sum <- nm_factor(nklam, m2) * t1 + nm_factor(klam, m1) * t2 -
     2 * (t31 %*% t32)
-  sum <- sum / (p * nm_factor(n - k, m2) * nm_factor(k, m1))
+  sum <- sum / (p * nm_factor(n - k - m2, m2) * nm_factor(k, m1))
 
   sum[1, 1]
 }
+
+
+
+
+
+
+
+
+# --- fast helpers (internal) ---
+.gap_sum_block <- function(X, m) {
+  u <- nrow(X)
+  if (u <= 0) return(0)
+  if (m < 0) {
+    # |a-b| > m always true, includes diagonal -> sum_{a,b} Xa^T Xb = ||sum X||^2
+    s <- colSums(X)
+    return(sum(s * s))
+  }
+  if (u <= m + 1) return(0)
+
+  s <- colSums(X)
+  offdiag <- sum(s * s) - sum(rowSums(X * X))  # sum_{a!=b} Xa^T Xb
+
+  lag_sum <- 0
+  if (m > 0) {
+    for (h in 1:m) {
+      if (u - h >= 1) {
+        lag_sum <- lag_sum + sum(rowSums(X[1:(u - h), , drop = FALSE] *
+                                        X[(1 + h):u, , drop = FALSE]))
+      }
+    }
+  }
+  offdiag - 2 * lag_sum
+}
+
+.gap_weighted_sum <- function(X, m) {
+  u <- nrow(X)
+  if (u <= 0) return(rep(0, ncol(X)))
+  if (m < 0) {
+    # all pairs allowed incl diagonal -> each row pairs with u rows
+    return(u * colSums(X))
+  }
+  if (u <= m + 1) return(rep(0, ncol(X)))
+
+  idx <- 1:u
+  w <- (u - 1) - pmin(m, idx - 1) - pmin(m, u - idx)  # w_u(t)
+  colSums(X * w)
+}
+
+# --- DROP-IN replacement: same name/signature ---
+#' @export
+t_lambda_statistic <- function(
+  sample, k, m = c(m1 = 0, m2 = 0), lambda = 1, support_set = NULL
+) {
+  if (all(c("m1", "m2") %in% names(m)) && length(m) == 2) {
+    m1 <- m[["m1"]]
+    m2 <- m[["m2"]]
+  } else if (is.numeric(m)) {
+    m1 <- m
+    m2 <- m
+  } else {
+    stop("Please set either m to a number or a list as c(m1 = ..., m2 = ...)")
+  }
+
+  n <- NROW(sample)
+  p <- NCOL(sample)
+
+  # same early exit as current code
+  if (k <= m1 + 1 || k + m2 >= n - 1) return(0)
+
+  klam  <- floor(k * lambda)
+  nklam <- floor((n - k - m2) * lambda)
+
+  if (identical(support_set, integer(0))) {
+    return(0)
+  } else if (!is.null(support_set)) {
+    sample <- sample[, support_set, drop = FALSE]
+    p <- length(support_set)
+  }
+
+  # if the factors are zero, return 0 (avoid 0/0)
+  den1 <- nm_factor(k, m1)
+  den2 <- nm_factor(n - k - m2, m2)
+  if (p == 0 || den1 == 0 || den2 == 0) return(0)
+  if (nm_factor(klam, m1) == 0 || nm_factor(nklam, m2) == 0) return(0)
+
+  # blocks for lambda
+  L <- sample[1:klam, , drop = FALSE]
+  R <- sample[(k + m2 + 1):(k + m2 + nklam), , drop = FALSE]
+
+  t1 <- .gap_sum_block(L, m1)
+  t2 <- .gap_sum_block(R, m2)
+  t31 <- .gap_weighted_sum(L, m1)
+  t32 <- .gap_weighted_sum(R, m2)
+
+  num <- nm_factor(nklam, m2) * t1 + nm_factor(klam, m1) * t2 - 2 * sum(t31 * t32)
+  out <- num / (p * den2 * den1)
+  as.numeric(out)
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -192,9 +299,9 @@ normalizer <- function(
       (t_lambda_statistic(sample, k, m, lam, support_set) - lam^4 * t_at_1)^2
     } else if (type == 1) {
       klam <- floor(lam * k)
-      nklam <- floor(lam * (n - k))
+      nklam <- floor(lam * (n - k - m2))
       factor <- nm_factor(klam, m1) / nm_factor(k, m1) *
-        nm_factor(nklam, m2) / nm_factor(n - k, m2)
+        nm_factor(nklam, m2) / nm_factor(n - k - m2, m2)
       (t_lambda_statistic(sample, k, m, lam, support_set) - factor * t_at_1)^2
     } else {
       stop("Type not accepted. Please only use type 0 or 1.")
