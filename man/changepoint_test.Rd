@@ -44,7 +44,7 @@ cp_test_normalized(
 
 \item{delta}{Numeric scalar (paper: \eqn{\Delta}). Size size of relevant
 change that will be tested for. If set to \code{NULL}, it only returns
-\code{max_delta_reject} and no test decision. Default \code{NULL}}
+\code{min_delta} and no test decision. Default \code{NULL}}
 
 \item{m}{Trimming parameter. Either a nonnegative scalar applied to both
 sides or a length-2 numeric \code{c(m1 = ..., m2 = ...)}. Default \code{NULL}}
@@ -85,9 +85,8 @@ A data.frame object with entries (not all are nec. given)
 \item \code{khat}: named scalar \code{critical_value}
 \item \code{reject}: Logical; decision of the test (only given if \code{delta}
 is not equal to \code{NULL})
-\item \code{delta_max}: the maximum value such that any relevant
-hypothesis with \code{delta <= delta_max} will reject the
-null hypotheses.
+\item \code{delta_min}: the minimum value such that any relevant
+hypothesis with \code{delta <= delta_min} cannot be rejected.
 }
 }
 \description{
