@@ -337,25 +337,25 @@ normalizer <- function(
 #' X <- matrix(rnorm(200 * 10), 200, 10)
 #' s_hat <- estimate_support_set(X, k = 100)
 #' @export
-estimate_support_set <- function(
-  sample, k,
-  m = c(m1 = 0, m2 = 0),
-  kappa = 3 / 2,
-  n_points = 20,
-  parallelize = FALSE
-) {
+# estimate_support_set <- function(
+#   sample, k,
+#   m = c(m1 = 0, m2 = 0),
+#   kappa = 3 / 2,
+#   n_points = 20,
+#   parallelize = FALSE
+# ) {
 
-  p <- ncol(sample)
+#   p <- ncol(sample)
 
-  check_coordinate <- function(i) {
-    delta_i <- pscp::tn_statistic(sample, k, m, c(i))
-    v_i <- pscp::vl_statistic(sample, k, m, c(i), n_points)
-    delta_i > v_i * log(p)^kappa
-  }
+#   check_coordinate <- function(i) {
+#     delta_i <- pscp::tn_statistic(sample, k, m, c(i))
+#     v_i <- pscp::vl_statistic(sample, k, m, c(i), n_points)
+#     delta_i > v_i * log(p)^kappa
+#   }
 
-  indices <- .map_apply(1:p, check_coordinate, parallelize = parallelize)
-  which(indices)
-}
+#   indices <- .map_apply(1:p, check_coordinate, parallelize = parallelize)
+#   which(indices)
+# }
 
 
 
